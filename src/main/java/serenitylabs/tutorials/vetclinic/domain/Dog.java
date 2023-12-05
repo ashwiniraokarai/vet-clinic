@@ -45,24 +45,38 @@ public class Dog {
 
     //Stage 3: The builder pattern
     //this method is meant for those callers that don't want to call the constructor and prefer the Builder pattern instead
-    private String name, breed;
+    private String name, breed, optionalFavoriteFood;
     LocalDateTime birthday;
 
     //a constructor that the calling code (test) won't call but the Builder class will, via the .build() method
-    public Dog (String name, String breed, LocalDateTime birthday){
+    public Dog (String name, String breed, LocalDateTime birthday, String optionalFavoriteFood){
         this.name = name;
         this.breed = breed;
         this.birthday = birthday;
+        this.optionalFavoriteFood = optionalFavoriteFood;
     }
 
-    //the static method that calling code (test) will call
-    public static DogBuilder called(String name){
+
+    public interface RequiredBreed {
+        public RequiredBirthday ofBreed(String breed);
+    }
+
+    public interface RequiredBirthday {
+        public DogBuilder bornOn(LocalDateTime birthday);
+    }
+
+    //this is the static method that calling code (test) will start its chain of calls with
+    //refactored:
+        // to return a parent type WithBreed in place of previously DogBuilder type
+        //this forces the caller (test) to call WithBreed type's only available method - ofBreed, in the chain of calls
+    public static RequiredBreed called(String name){
         return new DogBuilder(name);
     }
 
-//  The builder class is an inner class responsible for building a Dog object
-    public static class DogBuilder {
-    private String name, breed;
+
+//  The builder class is an inner class within Dog class responsible for building a Dog object
+    public static class DogBuilder implements RequiredBreed, RequiredBirthday {
+    private String name, breed, optionalFavoriteFood;
     private LocalDateTime birthday;
 
         public DogBuilder(String name){
@@ -70,8 +84,11 @@ public class Dog {
             this.name = name;
         }
 
-        //set the value, return the current builder object
-        public DogBuilder ofBreed(String breed){
+        //set the value
+        //refactored:
+         // to return a parent type WithBirthday in place of previously DogBuilder type
+        //this forces the caller (test) to call WithBirthday type's only available method - ofBirthday, in the chain of calls
+        public RequiredBirthday ofBreed(String breed){
             this.breed = breed;
             return this;
         }
@@ -82,11 +99,17 @@ public class Dog {
             return this;
         }
 
+        public DogBuilder  likesToEat(String optionalFavoriteFood){
+            this.optionalFavoriteFood = optionalFavoriteFood;
+            return this;
+        }
+
         //instantiate a Dog object with the params bubbled up, and return it to caller code (the test)
         public Dog build(){
-            return new Dog(name, breed, birthday);
+            return new Dog(name, breed, birthday, optionalFavoriteFood);
         }
     }
+
 
     //Moved all getters of Dog class to the bottom so they don't interfere when a human reads thro the Builder pattern and overall code evolution
     public String getName() {
@@ -101,8 +124,8 @@ public class Dog {
         return this.birthday;
     }
 
-/*    public String getOptionalFavoriteFood() {
+    public String getOptionalFavoriteFood() {
         return optionalFavoriteFood;
-    }*/
+    }
 
 }

@@ -46,7 +46,7 @@ public class WhenCreatingANewDog {
 //    Stage 3: The Builder Pattern
 //    Rewrite such that Dog instance creation gets routed  to a separate DogBuilder class via the Dog class
     @Test
-    public void can_build_a_dog_from_builder() {
+    public void can_build_dog_from_builder() {
         String name = "brownie";
         String breed = "poodle";
         LocalDateTime birthday = LocalDateTime.now();
@@ -65,5 +65,19 @@ public class WhenCreatingANewDog {
         Assertions.assertThat(brownie.getName()).isEqualTo(name);
         Assertions.assertThat(brownie.getBreed()).isEqualTo(breed);
         Assertions.assertThat(brownie.getBirthday()).isEqualTo(birthday);
+    }
+
+    //name, breed and birthday are mandatory. favorite food is optional.
+    @Test
+    public void cannot_build_dog_without_mandatory_fields(){
+       Dog cloud = Dog.called("cloud")
+                .ofBreed("poodle")      //cannot build dog without breed because it's been converted to mandatory data
+                .bornOn(LocalDateTime.now())    //cannot build dog without breed because it's been converted to mandatory data
+                //.likesToEat("bread")  //can entirely skip setting this data/ calling this method because it remains optional
+                .build();
+        Assertions.assertThat(cloud.getName()).isEqualTo("cloud");
+        Assertions.assertThat(cloud.getBreed()).isNotNull();
+        Assertions.assertThat(cloud.getBirthday()).isNotNull();
+        //Assertions.assertThat(cloud.getOptionalFavoriteFood()).isEqualTo("bread");
     }
 }
