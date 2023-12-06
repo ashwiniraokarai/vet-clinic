@@ -51,7 +51,7 @@ public class WhenCreatingANewDog {
         String breed = "poodle";
         LocalDateTime birthday = LocalDateTime.now();
 
-      Dog brownie = Dog.called(name)
+      Dog brownie = Dog.named(name)
                             .ofBreed(breed)
                             .bornOn(birthday)
                             .build();
@@ -70,7 +70,7 @@ public class WhenCreatingANewDog {
     //name, breed and birthday are mandatory. favorite food is optional.
     @Test
     public void cannot_build_dog_without_mandatory_fields(){
-       Dog cloud = Dog.called("cloud")
+       Dog cloud = Dog.named("cloud")
                 .ofBreed("poodle")      //cannot build dog without breed because it's been converted to mandatory data
                 .bornOn(LocalDateTime.now())    //cannot build dog without breed because it's been converted to mandatory data
                 //.likesToEat("bread")  //can entirely skip setting this data/ calling this method because it remains optional

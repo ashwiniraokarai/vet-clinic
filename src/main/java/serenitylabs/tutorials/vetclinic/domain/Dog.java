@@ -69,7 +69,7 @@ public class Dog {
     //refactored:
         // to return a parent type WithBreed in place of previously DogBuilder type
         //this forces the caller (test) to call WithBreed type's only available method - ofBreed, in the chain of calls
-    public static RequiredBreed called(String name){
+    public static RequiredBreed named(String name){
         return new DogBuilder(name);
     }
 
