@@ -3,8 +3,6 @@ package serenitylabs.tutorials.vetclinic.domain;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-import java.time.LocalDateTime;
-
 public class WhenWeCreateANewDog {
 //    @Test
 //    public void a_new_dog_should_have_a_name(){
@@ -18,7 +16,7 @@ public class WhenWeCreateANewDog {
     public void can_create_a_dog_with_required_data_using_builder(){
        final  String THE_FOURTH_OF_JULY = "Jul-04-2023";
 
-        Dog fido = Dog.called("Fido")
+        Dog fido = Dog.named("Fido")
                                  .ofBreed("Labrador")
                                 .ofColor("black")
                                 .bornOn(THE_FOURTH_OF_JULY);
@@ -33,7 +31,7 @@ public class WhenWeCreateANewDog {
     public void can_add_optional_favorite_food(){
         final  String THE_FOURTH_OF_JULY = "Jul-04-2023";
 
-        Dog fido = Dog.called("Fido")
+        Dog fido = Dog.named("Fido")
                 .ofBreed("Labrador")
                 .ofColor("black")  //caller can either call likesToEat before calling bornOn after setting color
                 .likesToEat("banana")
@@ -50,7 +48,7 @@ public class WhenWeCreateANewDog {
     public void can_add_optional_favorite_toy(){
         final  String THE_FOURTH_OF_JULY = "Jul-04-2023";
 
-        Dog fido = Dog.called("Fido")
+        Dog fido = Dog.named("Fido")
                 .ofBreed("Labrador")
                 .ofColor("black")   //caller can either call likesToPlayWith or likesToEat before calling  bornOn after setting color
                 .likesToPlayWith("ball")
@@ -67,7 +65,7 @@ public class WhenWeCreateANewDog {
     public void can_build_dog_without_optional_data(){
         final  String THE_FOURTH_OF_JULY = "Jul-04-2023";
 
-        Dog fido = Dog.called("Fido")
+        Dog fido = Dog.named("Fido")
                 .ofBreed("Labrador")
                 .ofColor("black")   //caller can either call likesToPlayWith or likesToEat or neither before calling  bornOn after setting color
 //                .likesToEat("banana")     //skip

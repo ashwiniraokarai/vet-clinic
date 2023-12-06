@@ -1,7 +1,5 @@
 package serenitylabs.tutorials.vetclinic.domain;
 
-import java.time.LocalDateTime;
-
 public class Dog {
     private String name, breed, dateOfBirth, color, optionalFavoriteFood, optionalFavoriteToy;
     public Dog(String name, String breed, String color, String optionalFavoriteFood, String optionalFavoriteToy, String dateOfBirth) {
@@ -45,7 +43,7 @@ public class Dog {
     }
 
     //The first method the caller (test) calls to build a Dog object
-    public static WithBreed called(String name) {
+    public static WithBreed named(String name) {
         return new DogBreeder(name);
     }
 
