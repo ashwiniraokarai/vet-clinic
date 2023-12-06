@@ -2,7 +2,7 @@ package serenitylabs.tutorials.vetclinic.domain;
 
 import java.time.LocalDateTime;
 
-public class Dog {
+public class DogContainingBuilder {
   /*  Stage 1: Letting objects be created with default constructors, then set values thro setters
     private String name, breed, dateOfBirth;
     private LocalDateTime birthday;
@@ -18,14 +18,14 @@ public class Dog {
     }*/
 
  /*   // Stage 2: Limiting value setting through constructor parameters, no setters to set values a second time
-    //We now have an immutable Dog class
+    //We now have an immutable DogContainingBuilder class
     // Not necessary to set em to final but it helps with readability
     private final String name, breed;
     private final LocalDateTime birthday;
     private final String optionalFavoriteFood;
 
     //this constructor is meant for those callers that only want to initialize the required fields
-    public Dog(String name, String breed, LocalDateTime birthday){
+    public DogContainingBuilder(String name, String breed, LocalDateTime birthday){
 //        this.name = name;
 //        this.breed = breed;
 //        this.birthday = birthday;
@@ -36,7 +36,7 @@ public class Dog {
     }
 
     //this constructor is meant for those callers that would like to initialize optional fields as well
-    public Dog(String name, String breed, LocalDateTime birthday, String optionalFavoriteFood){
+    public DogContainingBuilder(String name, String breed, LocalDateTime birthday, String optionalFavoriteFood){
         this.name = name;
         this.breed = breed;
         this.birthday = birthday;
@@ -49,7 +49,7 @@ public class Dog {
     LocalDateTime birthday;
 
     //a constructor that the calling code (test) won't call but the Builder class will, via the .build() method
-    public Dog (String name, String breed, LocalDateTime birthday, String optionalFavoriteFood){
+    public DogContainingBuilder(String name, String breed, LocalDateTime birthday, String optionalFavoriteFood){
         this.name = name;
         this.breed = breed;
         this.birthday = birthday;
@@ -74,44 +74,44 @@ public class Dog {
     }
 
 
-//  The builder class is an inner class within Dog class responsible for building a Dog object
+//  The builder class is an inner class within DogContainingBuilder class responsible for building a DogContainingBuilder object
     public static class DogBuilder implements RequiredBreed, RequiredBirthday {
-    private String name, breed, optionalFavoriteFood;
-    private LocalDateTime birthday;
+        private String name, breed, optionalFavoriteFood;
+        private LocalDateTime birthday;
 
-        public DogBuilder(String name){
-            //automatically returns a DogBuilder object (ajka "this") just like any constructor
-            this.name = name;
-        }
+            public DogBuilder(String name){
+                //automatically returns a DogBuilder object (ajka "this") just like any constructor
+                this.name = name;
+            }
 
-        //set the value
-        //refactored:
-         // to return a parent type WithBirthday in place of previously DogBuilder type
-        //this forces the caller (test) to call WithBirthday type's only available method - ofBirthday, in the chain of calls
-        public RequiredBirthday ofBreed(String breed){
-            this.breed = breed;
-            return this;
-        }
+            //set the value
+            //refactored:
+             // to return a parent type WithBirthday in place of previously DogBuilder type
+            //this forces the caller (test) to call WithBirthday type's only available method - ofBirthday, in the chain of calls
+            public RequiredBirthday ofBreed(String breed){
+                this.breed = breed;
+                return this;
+            }
 
-    //set the value, return the current builder object
-        public DogBuilder bornOn(LocalDateTime birthday){
-            this.birthday = birthday;
-            return this;
-        }
+        //set the value, return the current builder object
+            public DogBuilder bornOn(LocalDateTime birthday){
+                this.birthday = birthday;
+                return this;
+            }
 
-        public DogBuilder  likesToEat(String optionalFavoriteFood){
-            this.optionalFavoriteFood = optionalFavoriteFood;
-            return this;
-        }
+            public DogBuilder  likesToEat(String optionalFavoriteFood){
+                this.optionalFavoriteFood = optionalFavoriteFood;
+                return this;
+            }
 
-        //instantiate a Dog object with the params bubbled up, and return it to caller code (the test)
-        public Dog build(){
-            return new Dog(name, breed, birthday, optionalFavoriteFood);
-        }
+            //instantiate a DogContainingBuilder object with the params bubbled up, and return it to caller code (the test)
+            public DogContainingBuilder build(){
+                return new DogContainingBuilder(name, breed, birthday, optionalFavoriteFood);
+            }
     }
 
 
-    //Moved all getters of Dog class to the bottom so they don't interfere when a human reads thro the Builder pattern and overall code evolution
+    //Moved all getters of DogContainingBuilder class to the bottom so they don't interfere when a human reads thro the Builder pattern and overall code evolution
     public String getName() {
         return this.name;
     }

@@ -14,14 +14,14 @@ public class WhenCreatingANewDog {
         LocalDateTime birthday = LocalDateTime.now();
 
 //   Stage 1: Creating object with default constructors, then set values thro setters
-    Dog brownie = new Dog();
+    DogContainingBuilder brownie = new DogContainingBuilder();
    brownie.setName(name);
    brownie.setBreed(breed);
    brownie.setBirthday(birthday);
 
 //       Stage 2: Creating object with constructor parameters, no setters
 
-        Dog brownie = new Dog(name, breed, birthday);
+        DogContainingBuilder brownie = new DogContainingBuilder(name, breed, birthday);
 
         Assertions.assertThat(brownie.getName()).isEqualTo(name);
         Assertions.assertThat(brownie.getBreed()).isEqualTo(breed);
@@ -37,27 +37,27 @@ public class WhenCreatingANewDog {
         LocalDateTime birthday = LocalDateTime.now();
         String optionalFavoriteFood = "bone";
 
-        Dog olive =new Dog(name, breed,birthday, optionalFavoriteFood);
+        DogContainingBuilder olive =new DogContainingBuilder(name, breed,birthday, optionalFavoriteFood);
 
         Assertions.assertThat(olive.getOptionalFavoriteFood()).isEqualTo(optionalFavoriteFood);
     }
 */
 
 //    Stage 3: The Builder Pattern
-//    Rewrite such that Dog instance creation gets routed  to a separate DogBuilder class via the Dog class
+//    Rewrite such that DogContainingBuilder instance creation gets routed  to a separate DogBuilder class via the DogContainingBuilder class
     @Test
     public void can_build_dog_from_builder() {
         String name = "brownie";
         String breed = "poodle";
         LocalDateTime birthday = LocalDateTime.now();
 
-      Dog brownie = Dog.named(name)
+      DogContainingBuilder brownie = DogContainingBuilder.named(name)
                             .ofBreed(breed)
                             .bornOn(birthday)
                             .build();
 
 /*      Deconstructed version of the above code - just to help interpert
-        Dog.DogBuilder builder = Dog.called(name);
+        DogContainingBuilder.DogBuilder builder = DogContainingBuilder.called(name);
         builder = builder.ofBreed(breed);
         builder = builder.bornOn(birthday);
         brownie = builder.build();*/
@@ -70,7 +70,7 @@ public class WhenCreatingANewDog {
     //name, breed and birthday are mandatory. favorite food is optional.
     @Test
     public void cannot_build_dog_without_mandatory_fields(){
-       Dog cloud = Dog.named("cloud")
+       DogContainingBuilder cloud = DogContainingBuilder.named("cloud")
                 .ofBreed("poodle")      //cannot build dog without breed because it's been converted to mandatory data
                 .bornOn(LocalDateTime.now())    //cannot build dog without breed because it's been converted to mandatory data
                 //.likesToEat("bread")  //can entirely skip setting this data/ calling this method because it remains optional
