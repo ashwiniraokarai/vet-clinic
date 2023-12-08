@@ -1,11 +1,16 @@
 package serenitylabs.tutorials.vetclinic.domain;
 
+import com.google.common.collect.ImmutableList;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Dog {
     private final String name;
     private final String breed;
-    private final String colour;
+    private final List<String> colour;
 
-    public Dog(String name, String breed, String colour) {
+    public Dog(String name, String breed, List<String> colour) {
 
         this.name = name;
         this.breed = breed;
@@ -20,8 +25,14 @@ public class Dog {
         return breed;
     }
 
-    public String getColour() {
+    public List<String> getColour() {
         return colour;
+    }
+
+    @Override
+    public String toString(){
+//     return "Fido the black labrador";
+        return name + " the " + (colour + " "  + breed).toLowerCase();
     }
 
     public static DogBuilder called(String name) {
@@ -41,8 +52,10 @@ public class Dog {
             return this;
         }
 
-        public Dog andOfColour(String colour) {
-            return new Dog(name, breed, colour);
+        //the ellipsis denote unspecified number of arguments. Caller can pass any number of colors.
+        //the values are recognized as a String array (String []) by default but we choose to copy it  into a List using ImmutableList.copyOf(colour)
+        public Dog andOfColour(String... colour) {
+            return new Dog(name, breed, ImmutableList.copyOf(colour));
         }
     }
 }
