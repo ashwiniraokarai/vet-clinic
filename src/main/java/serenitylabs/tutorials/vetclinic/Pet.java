@@ -55,8 +55,17 @@ public class Pet {
         return (totalEaten >= amountNeeded);
     }
 
+/*    //Pet is having to make its own meal to be fed. This is not right. The Pet should only have to EAT the Meal its given.
+    //We change this design such that Pet can be HANDED a Meal.
+    //Making and handing the Meal should be someone else's responsibility - the FoodDispenser's
+    //So we shift over the Meal making responsibility to FoodDispenser
+
     public void feed(double amountInGrams, PetFood foodBrand) {
         mealsGiven.add(new Meal(amountInGrams, foodBrand));
+    }*/
+
+    public void eat(Meal meal) {
+        mealsGiven.add(meal);
     }
 
     public static class PetBuilder {
