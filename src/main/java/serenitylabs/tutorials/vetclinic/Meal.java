@@ -6,9 +6,9 @@ public class Meal {
     private final double amountInGrams;
     private final PetFood foodBrand;
 
-    public Meal(double amountInGrams, PetFood foodBrand) {
+    public Meal(double amountInGrams, PetFood footBrand) {
         this.amountInGrams = amountInGrams;
-        this.foodBrand = foodBrand;
+        this.foodBrand = footBrand;
     }
 
     public double getAmountInGrams() {

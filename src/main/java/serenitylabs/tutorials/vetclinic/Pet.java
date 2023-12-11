@@ -55,8 +55,8 @@ public class Pet {
         return (totalEaten >= amountNeeded);
     }
 
-    public void eat(Meal meal) {
-        mealsGiven.add(meal);
+    public void feed(double amountInGrams, PetFood foodBrand) {
+        mealsGiven.add(new Meal(amountInGrams, foodBrand));
     }
 
     public static class PetBuilder {
