@@ -22,7 +22,7 @@ public class PetHotel {
         for (Pet pet : getPets()) {
             FoodDispenser foodDispenser = new FoodDispenser();
             //foodDispenser.feedAnyPet(pet);
-            pet.eat(foodDispenser.makeMealForPet(pet));
+            pet.eat(foodDispenser.makeMealFor(pet));
         }
     }
 

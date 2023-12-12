@@ -48,9 +48,9 @@ public class FoodDispenser {
         pet.eat(makeMealForPet(pet));
     }*/
 
-    public Meal makeMealForPet(Pet pet){
+    public Meal makeMealFor(Pet pet){
         //refactored below to use Maps to pull parameter values from:   return new Meal(20 * pet.getWeightInKilos(), PetFood.FidosFood);
-       //refactored once more to use wrapper methods to pull parameter values from: return new Meal(PET_AND_FOOD_GRAMS.get(pet.getBreed()) * pet.getWeightInKilos());
+       //refactored once more to use wrapper methods to pull parameter values from: return new Meal(FOOD_GRAMS.get(pet.getBreed()) * pet.getWeightInKilos(), FOOD_TYPE.get(pet.getBreed() );
         return new Meal(withRightQuantity(pet), withRightFoodType(pet));
     }
 
