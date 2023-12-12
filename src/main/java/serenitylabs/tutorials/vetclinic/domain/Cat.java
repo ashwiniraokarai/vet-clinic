@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cat {
+public class Cat extends Animal{
     private final String name;
     private final String breed;
     private final List<String> colour;
