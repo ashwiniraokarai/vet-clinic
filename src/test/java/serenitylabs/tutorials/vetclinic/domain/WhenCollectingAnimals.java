@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 public class WhenCollectingAnimals {
     @Test
@@ -32,6 +31,8 @@ public class WhenCollectingAnimals {
         }
     }
 
+  /*  //this test no longer passes after refactoring  the complain() method to polymorph()
+    //complain() method is now an abstract method on the Animal with concrete implementations on the sub types
     @Test
     public void allAnimalsComplainTheSameWay(){
         List<Animal> animals = new ArrayList<Animal>();
@@ -50,5 +51,28 @@ public class WhenCollectingAnimals {
             //the downside is that there's only one behavior so all Animals behave the same way (Dogs and Cats are limited to complaining in one way)
             assertThat(animal.complain(), equalTo("generic animal noise"));
         }
+    }*/
+
+    @Test
+    public void eachAnimalInTheListComplainsInItsOwnStyle(){
+        List<Animal> animals = new ArrayList<Animal>();
+
+        Animal bollo = Dog.called("bollo").ofBreed("husky").andOfColour("black");
+        Animal gek = Cat.called("gek").ofBreed("russian cat").andOfColour("ginger");
+
+        animals.add(bollo);
+        animals.add(gek);
+
+        //hamcrest matcher
+        assertThat(animals, contains(bollo, gek));
+
+        for(Animal animal : animals){
+            animal.complain();
+            assertThat(animal.complain(), not(equalTo("generic animal noise")));
+        }
+
+        assertThat(bollo.complain(), equalTo("grrr"));
+        assertThat(gek.complain(), equalTo("meow"));
     }
+
 }

@@ -1,7 +1,8 @@
 package serenitylabs.tutorials.vetclinic.domain;
 
-public class Animal {
-    public String complain(){
+public abstract class Animal {
+    public abstract String complain();
+    /*{
         return "generic animal noise";
-    }
+    }*/
 }

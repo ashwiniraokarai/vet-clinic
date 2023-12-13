@@ -39,6 +39,11 @@ public class Dog extends Animal {
         return new DogBuilder(name);
     }
 
+    @Override
+    public String complain() {
+        return "grrr";
+    }
+
     public static class DogBuilder {
         private final String name;
         private String breed;
