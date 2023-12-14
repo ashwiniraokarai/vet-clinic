@@ -38,11 +38,6 @@ public class Cat extends Animal{
         return new CatBuilder(name);
     }
 
-    @Override
-    public String complain() {
-        return "meow";
-    }
-
     public static class CatBuilder {
         private final String name;
         private String breed;
