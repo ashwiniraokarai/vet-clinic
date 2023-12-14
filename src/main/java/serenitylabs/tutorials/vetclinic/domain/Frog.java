@@ -6,13 +6,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cat extends Animal implements VaccinationEligible {
+public class Frog extends Animal {
     private final String name;
     private final String breed;
     private final List<String> colour;
     private LocalDate lastVaccinatedOnDate;
 
-    public Cat(String name, String breed, List<String> colour) {
+    public Frog(String name, String breed, List<String> colour) {
 
         this.name = name;
         this.breed = breed;
@@ -38,40 +38,28 @@ public class Cat extends Animal implements VaccinationEligible {
 
     @Override
     public String complain() {
-        return "meow";
+        return "croak";
     }
 
-    @Override
-    public void setLastVaccinatedOnDate(LocalDate lastVaccinatedOnDate){
-        this.lastVaccinatedOnDate = lastVaccinatedOnDate;
+    public static FrogBuilder called(String name) {
+        return new FrogBuilder(name);
     }
 
-    @Override
-    public LocalDate nextVaccineDueIn() {
-
-        return lastVaccinatedOnDate.plusYears(1);
-    }
-
-    public static CatBuilder called(String name) {
-        return new CatBuilder(name);
-    }
-
-
-    public static class CatBuilder {
+    public static class FrogBuilder {
         private final String name;
         private String breed;
 
-        public CatBuilder(String name) {
+        public FrogBuilder(String name) {
             this.name = name;
         }
 
-        public CatBuilder ofBreed(String breed) {
+        public FrogBuilder ofBreed(String breed) {
             this.breed = breed;
             return this;
         }
 
-        public Cat andOfColour(String... colour) {
-            return new Cat(name, breed, ImmutableList.copyOf(colour));
+        public Frog andOfColour(String... colour) {
+            return new Frog(name, breed, ImmutableList.copyOf(colour));
         }
     }
 }
