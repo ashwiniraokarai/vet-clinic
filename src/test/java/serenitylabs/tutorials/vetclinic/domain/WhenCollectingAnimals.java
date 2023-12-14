@@ -8,7 +8,6 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-//This test class shows how to work your way up to accomplish Basic Polymorphism with Inheritance
 public class WhenCollectingAnimals {
     @Test
     public void aListOfAnimalsCanContainBothCatAndDog(){
@@ -68,7 +67,6 @@ public class WhenCollectingAnimals {
         assertThat(animals, contains(bollo, gek));
 
         for(Animal animal : animals){
-            //complain() is a polymorphic method
             animal.complain();
             assertThat(animal.complain(), not(equalTo("generic animal noise")));
         }
