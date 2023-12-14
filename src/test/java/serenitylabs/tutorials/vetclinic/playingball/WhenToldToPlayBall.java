@@ -17,7 +17,7 @@ public class WhenToldToPlayBall {
 
     @Before
     public void setOutput() {
-        System.setOut(new PrintStream(output));
+        System.setOut(new PrintStream(output, true));
     }
 
     @Test
@@ -27,7 +27,7 @@ public class WhenToldToPlayBall {
 
         bill.goPlay(Cricket);
 
-        assertThat(output.toString(), equalTo("Hit the wicket"));
+        assertThat(output.toString(), equalTo("Hit the wicket\r\n"));
     }
 
     @Test
@@ -37,7 +37,7 @@ public class WhenToldToPlayBall {
 
         bill.goPlay(Tennis);
 
-        assertThat(output.toString(), equalTo("Serve the ball"));
+        assertThat(output.toString(), equalTo("Serve the ball\r\n"));
     }
 
     @Test
@@ -47,7 +47,7 @@ public class WhenToldToPlayBall {
 
         bill.goPlay(Football);
 
-        assertThat(output.toString(), equalTo("Kick the ball"));
+        assertThat(output.toString(), equalTo("Kick the ball\r\n"));
     }
 
     @Test
@@ -57,7 +57,7 @@ public class WhenToldToPlayBall {
 
         bill.goPlay(Handball);
 
-        assertThat(output.toString(), equalTo("Throw the ball"));
+        assertThat(output.toString(), equalTo("Throw the ball\r\n"));
     }
 
     @Test
@@ -67,6 +67,6 @@ public class WhenToldToPlayBall {
 
         bill.goPlay(Hockey);
 
-        assertThat(output.toString(), equalTo("Hit the ball with the stick"));
+        assertThat(output.toString(), equalTo("Hit the ball with the stick\r\n"));
     }
 }
