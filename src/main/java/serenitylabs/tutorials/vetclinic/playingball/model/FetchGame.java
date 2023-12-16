@@ -10,7 +10,7 @@ public class FetchGame {
             case Cricket: return new CricketGame();
             case Handball: return new HandBallGame();
             case Hockey: return new HockeyGame();
-            default: throw new DontRecognizeThatGameException();
+            default: throw new DontRecognizeThisGameException();
         }
     }
 }
