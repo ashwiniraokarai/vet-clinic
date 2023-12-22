@@ -4,7 +4,21 @@ import serenitylabs.tutorials.vetclinic.sales.model.LineItem;
 import serenitylabs.tutorials.vetclinic.sales.model.ProductCategory;
 import serenitylabs.tutorials.vetclinic.sales.model.SalesTax;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static serenitylabs.tutorials.vetclinic.sales.model.ProductCategory.*;
+
 public class SalesTaxService {
+
+    private static final Map<ProductCategory, TaxRateType> taxRateByProductCategoryMap = new HashMap<ProductCategory, TaxRateType>();
+
+    static{
+        taxRateByProductCategoryMap.put(Medicine, new ExemptTaxRate() );
+        taxRateByProductCategoryMap.put(Books, new ExemptTaxRate());
+        taxRateByProductCategoryMap.put(Snacks, new ReducedTaxRate());
+        taxRateByProductCategoryMap.put(SoftDrinks, new ReducedTaxRate());
+    }
 
     public SalesTax salesTaxEntryFor(LineItem item) {
 /*    //Finding a direction when problem solving:
@@ -22,23 +36,29 @@ public class SalesTaxService {
     }
 
     private TaxRate taxRateFor(LineItem item) {
-        //TaxRateAssessor taxRateAssessor = new ReducedTaxAssessor();
-        //replace new ReducedTaxAssessor() with a method that can return the right kind of TaxRateAssessor implementation
-        TaxRateAssessor taxRateAssessor =  fetchRightTaxAssessorImplementation(item);
-        return taxRateAssessor.rateFor(item);
+        //TaxRateType taxRateType = new ReducedTaxRate();
+        //replace new ReducedTaxRate() with a method that can return the right kind of TaxRateType implementation
+        TaxRateType taxRateType =  fetchRightTaxRateType(item);
+        return taxRateType.rateFor(item);
     }
 
-    private TaxRateAssessor fetchRightTaxAssessorImplementation(LineItem item) {
+/* Refactored to use a Map for the conditional, in place of the switch-case
+    private TaxRateType fetchRightTaxRateType(LineItem item) {
         ProductCategory productCategoryOfItem = item.getCategory();
         switch(productCategoryOfItem){
             case Books:
             case Medicine:
-                 return new ExemptTaxAssessor();
+                 return new ExemptTaxRate();
             case Snacks:
             case SoftDrinks:
-                return new ReducedTaxAssessor();
+                return new ReducedTaxRate();
             default:
-               return new StandardTaxAssessor();
+               return new StandardTaxRate();
         }
+    }*/
+
+    private TaxRateType fetchRightTaxRateType(LineItem item) {
+        ProductCategory itemCategory = item.getCategory();
+        return taxRateByProductCategoryMap.getOrDefault(itemCategory, new StandardTaxRate());
     }
 }
