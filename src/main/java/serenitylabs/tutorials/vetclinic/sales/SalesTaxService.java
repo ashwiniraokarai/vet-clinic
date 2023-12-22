@@ -42,7 +42,8 @@ public class SalesTaxService {
         return taxRateType.rateFor(item);
     }
 
-/* Refactored to use a Map for the conditional, in place of the switch-case
+/* // Refactored to use a Map for the conditional, in place of the switch-case
+//Using Maps as conditionals is a popular strategy pattern
     private TaxRateType fetchRightTaxRateType(LineItem item) {
         ProductCategory productCategoryOfItem = item.getCategory();
         switch(productCategoryOfItem){
