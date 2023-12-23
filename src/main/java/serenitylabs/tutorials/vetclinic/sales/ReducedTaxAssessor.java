@@ -2,7 +2,7 @@ package serenitylabs.tutorials.vetclinic.sales;
 
 import serenitylabs.tutorials.vetclinic.sales.model.LineItem;
 
-public class ReducedTaxRate implements TaxRateType {
+public class ReducedTaxAssessor implements TaxRateAssessor {
 
     @Override
     public TaxRate rateFor(LineItem item) {
