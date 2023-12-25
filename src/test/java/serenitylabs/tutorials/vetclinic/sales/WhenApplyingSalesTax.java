@@ -72,17 +72,17 @@ public class WhenApplyingSalesTax {
     @Test
     public void toys_should_be_charged_at_the_standard_rate() {
         // GIVEN
-        LineItem meds = LineItem.forASaleOf(10)
+        LineItem balloons = LineItem.forASaleOf(10)
                 .itemCalled("balloon")
                 .inCategory(Toys)
                 .withAUnitPriceOf(10.00);
 
         // WHEN
         SalesTaxService salesTaxService = new SalesTaxService();
-        SalesTax calculatedSalesTax = salesTaxService.salesTaxEntryFor(meds);
+        SalesTax calculatedSalesTax = salesTaxService.salesTaxEntryFor(balloons);
 
         // THEN
-        SalesTax expectedSalesTax = SalesTax.atRateOf(TWENTY_THREE_PERCENT).withName("Standard").forAnAmountOf(meds.getTotal()*TWENTY_THREE_PERCENT);
+        SalesTax expectedSalesTax = SalesTax.atRateOf(TWENTY_THREE_PERCENT).withName("Standard").forAnAmountOf(balloons.getTotal()*TWENTY_THREE_PERCENT);
 
         assertThat(calculatedSalesTax, equalTo(expectedSalesTax));
     }
