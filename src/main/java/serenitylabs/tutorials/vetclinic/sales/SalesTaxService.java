@@ -8,6 +8,32 @@ public class SalesTaxService {
     public SalesTax
 
     salesTaxEntryFor(LineItem item) {
-        return null;
+/*//        attempt 1: return SalesTax object configured with hardcoded values
+        return SalesTax.atRateOf(0.09).withName("Reduced").forAnAmountOf(0.27);*/
+
+/*
+// attempt 2: return SalesTax object configured with values provided by a hypothetical TaxRate object
+        return SalesTax.atRateOf(taxRate.getRatePercent()).withName(taxRate.getRateName()).forAnAmountOf(taxRate.getRateAmount());
+*/
+
+/*// attempt 3: return SalesTax object configured with values provided by a real TaxRate object
+        TaxRate taxRateForItem = new TaxRate(item);
+        return SalesTax.atRateOf(taxRateForItem.getRatePercent()).withName(taxRateForItem.getRateName()).forAnAmountOf(taxRateForItem.getRateAmount());
+    }*/
+
+// attempt 4: same as Step 3 but move the TaxRate instantiation step in a separate method
+// This gives us the space and distance to flesh out the conditional logic for varying tax rate and name
+    TaxRate taxRateForItem = fetchTaxRate(item);
+    return SalesTax.atRateOf(taxRateForItem.getRatePercent()).withName(taxRateForItem.getRateName()).forAnAmountOf(taxRateForItem.getRateAmount());
+}
+
+    private TaxRate fetchTaxRate(LineItem item) {
+/*// as a caller, send hardcoded values to set until you can write conditional logic
+        return new TaxRate(0.09, "Reduced", 0.27);*/
+
+//iteration 1: write the conditional logic to handle Reduced tax type. You can expand the logic to other two tax types in the next iteration
+// We write the conditional logic using Strategy Pattern (a concrete implementation object set to its parent interface type)
+        TaxRateType taxRateType = new ReducedTaxRateType();
+        return taxRateType.rateFor(item);
     }
 }

@@ -4,27 +4,27 @@ import java.util.Objects;
 
 public class LineItem {
     private final double unitCost;
-    private final int quanity;
+    private final int quantity;
     private final String description;
     private final ProductCategory category;
 
-    public LineItem(double unitCost, int quanity, String description, ProductCategory category) {
+    public LineItem(double unitCost, int quantity, String description, ProductCategory category) {
         this.unitCost = unitCost;
-        this.quanity = quanity;
+        this.quantity = quantity;
         this.description = description;
         this.category = category;
     }
 
-    public static ItemCalled forASaleOf(int quanity) {
-        return new LineItemBuilder(quanity);
+    public static ItemCalled forASaleOf(int quantity) {
+        return new LineItemBuilder(quantity);
     }
 
     public double getUnitCost() {
         return unitCost;
     }
 
-    public int getQuanity() {
-        return quanity;
+    public int getQuantity() {
+        return quantity;
     }
 
     public String getDescription() {
@@ -36,7 +36,7 @@ public class LineItem {
     }
 
     public double getTotal() {
-        return quanity * unitCost;
+        return quantity * unitCost;
     }
 
     @Override
@@ -45,21 +45,21 @@ public class LineItem {
         if (o == null || getClass() != o.getClass()) return false;
         LineItem lineItem = (LineItem) o;
         return Double.compare(lineItem.unitCost, unitCost) == 0 &&
-                quanity == lineItem.quanity &&
+                quantity == lineItem.quantity &&
                 Objects.equals(description, lineItem.description) &&
                 category == lineItem.category;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(unitCost, quanity, description, category);
+        return Objects.hash(unitCost, quantity, description, category);
     }
 
     @Override
     public String toString() {
         return "LineItem{" +
                 "unitCost=" + unitCost +
-                ", quanity=" + quanity +
+                ", quanity=" + quantity +
                 ", description='" + description + '\'' +
                 ", category=" + category +
                 '}';
