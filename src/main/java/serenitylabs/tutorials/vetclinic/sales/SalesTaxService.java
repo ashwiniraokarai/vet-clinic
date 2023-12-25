@@ -4,7 +4,23 @@ import serenitylabs.tutorials.vetclinic.sales.model.LineItem;
 import serenitylabs.tutorials.vetclinic.sales.model.ProductCategory;
 import serenitylabs.tutorials.vetclinic.sales.model.SalesTax;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static serenitylabs.tutorials.vetclinic.sales.model.ProductCategory.*;
+
 public class SalesTaxService {
+
+    private static Map<ProductCategory, TaxRateType> categoryToTaxRateMap = new HashMap<ProductCategory, TaxRateType>();
+
+    static {
+        categoryToTaxRateMap.put(Medicine, new ExemptTaxRateType());
+        categoryToTaxRateMap.put(Books, new ExemptTaxRateType());
+        categoryToTaxRateMap.put(Snacks, new ReducedTaxRateType());
+        categoryToTaxRateMap.put(SoftDrinks, new ReducedTaxRateType());
+        categoryToTaxRateMap.put(Toys, new StandardTaxRateType());
+        categoryToTaxRateMap.put(PetFood, new StandardTaxRateType());
+        }
 
     public SalesTax
 
@@ -38,7 +54,7 @@ public class SalesTaxService {
         TaxRateType taxRateType = new ReducedTaxRateType();
         return taxRateType.rateFor(item);*/
 
-// Iteration 3: expand the logic to all tax types: Reduced Rate, Standard Rate, Exempt Rate using switch-case
+/*// Iteration 3: expand the logic to all tax types: Reduced Rate, Standard Rate, Exempt Rate using switch-case
         switch (item.getCategory()) {
             case Snacks:
             case SoftDrinks:
@@ -51,6 +67,11 @@ public class SalesTaxService {
                 return new StandardTaxRateType().rateFor(item);
             default:
                 return null;
-        }
+        }*/
+
+        // Iteration 4: expand the logic to all tax types using a Map
+        ProductCategory category = item.getCategory();
+        TaxRateType taxRateType = categoryToTaxRateMap.getOrDefault(category, new StandardTaxRateType());
+        return taxRateType.rateFor(item);
     }
 }
