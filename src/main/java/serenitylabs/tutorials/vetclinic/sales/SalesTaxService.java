@@ -13,11 +13,28 @@ public class SalesTaxService {
 
     private static final Map<ProductCategory, TaxRateType> taxRateByProductCategoryMap = new HashMap<ProductCategory, TaxRateType>();
 
+    //Several Lambda-based implementors of the Functional Interface TaxRateType, for each Tax rate type
+    private static final TaxRateType LAMBDA_EXEMPT_TAX_RATE = (item) -> new TaxRate(0.00, "Exempt");
+
+    private static final TaxRateType LAMBDA_REDUCED_TAX_RATE = (item) -> {
+        if(item.getTotal() >= 100){
+            return new TaxRate(0.135, "Reduced - Variant");
+        }
+        return new TaxRate(0.09, "Reduced");
+    };
+
+    private static final TaxRateType LAMBDA_STANDARD_TAX_RATE = (item) -> new TaxRate(0.23, "Standard");
+
     static{
-        taxRateByProductCategoryMap.put(Medicine, new ExemptTaxRate() );
+/*    taxRateByProductCategoryMap.put(Medicine, new ExemptTaxRate() );
         taxRateByProductCategoryMap.put(Books, new ExemptTaxRate());
         taxRateByProductCategoryMap.put(Snacks, new ReducedTaxRate());
-        taxRateByProductCategoryMap.put(SoftDrinks, new ReducedTaxRate());
+        taxRateByProductCategoryMap.put(SoftDrinks, new ReducedTaxRate());*/
+
+       taxRateByProductCategoryMap.put(Medicine, LAMBDA_EXEMPT_TAX_RATE);
+       taxRateByProductCategoryMap.put(Books, LAMBDA_EXEMPT_TAX_RATE);
+       taxRateByProductCategoryMap.put(Snacks, LAMBDA_REDUCED_TAX_RATE);
+       taxRateByProductCategoryMap.put(SoftDrinks, LAMBDA_REDUCED_TAX_RATE);
     }
 
     public SalesTax salesTaxEntryFor(LineItem item) {
@@ -39,7 +56,7 @@ public class SalesTaxService {
         //TaxRateType taxRateType = new ReducedTaxRate();
         //replace new ReducedTaxRate() with a method that can return the right kind of TaxRateType implementation
         TaxRateType taxRateType =  fetchRightTaxRateType(item);
-        return taxRateType.rateFor(item);
+       return taxRateType.apply(item);
     }
 
 /* // Refactored to use a Map for the conditional, in place of the switch-case
@@ -60,6 +77,6 @@ public class SalesTaxService {
 
     private TaxRateType fetchRightTaxRateType(LineItem item) {
         ProductCategory itemCategory = item.getCategory();
-        return taxRateByProductCategoryMap.getOrDefault(itemCategory, new StandardTaxRate());
+        return taxRateByProductCategoryMap.getOrDefault(itemCategory, LAMBDA_STANDARD_TAX_RATE);
     }
 }
