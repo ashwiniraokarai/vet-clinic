@@ -10,21 +10,31 @@ import java.util.Map;
 import static serenitylabs.tutorials.vetclinic.sales.model.ProductCategory.*;
 
 public class SalesTaxService {
+    private static final double EXEMPT_RATE_PERCENT = 0.00;
+    private static final double REDUCED_RATE_PERCENT = 0.09;
+    private static final double REDUCED_RATE_VARIANT_PERCENT = 0.135;
+    private static final double STANDARD_RATE_PERCENT = 0.23;
+
+    //several lambda-based implementations of the generic type TaxRateType interface
+   private static final TaxRateType LAMBDA_EXEMPT_TAX_RATE_TYPE = (item) ->  new TaxRate(EXEMPT_RATE_PERCENT, "Exempt", item.getTotal()*EXEMPT_RATE_PERCENT);
+
+   private static final TaxRateType LAMBDA_REDUCED_TAX_RATE_TYPE = (item) -> { if(item.getTotal() >= 100){
+            return new TaxRate(REDUCED_RATE_VARIANT_PERCENT, "Reduced - Variant", item.getTotal()*REDUCED_RATE_VARIANT_PERCENT);
+        }
+            return new TaxRate(REDUCED_RATE_PERCENT, "Reduced", item.getTotal()*REDUCED_RATE_PERCENT);};
+
+    private static final TaxRateType LAMBDA_STANDARD_TAX_RATE_TYPE = (item) -> new TaxRate(STANDARD_RATE_PERCENT, "Standard", item.getTotal()*STANDARD_RATE_PERCENT);
 
     private static Map<ProductCategory, TaxRateType> categoryToTaxRateMap = new HashMap<ProductCategory, TaxRateType>();
 
     static {
-        categoryToTaxRateMap.put(Medicine, new ExemptTaxRateType());
-        categoryToTaxRateMap.put(Books, new ExemptTaxRateType());
-        categoryToTaxRateMap.put(Snacks, new ReducedTaxRateType());
-        categoryToTaxRateMap.put(SoftDrinks, new ReducedTaxRateType());
-        categoryToTaxRateMap.put(Toys, new StandardTaxRateType());
-        categoryToTaxRateMap.put(PetFood, new StandardTaxRateType());
-        }
+        categoryToTaxRateMap.put(Medicine, LAMBDA_EXEMPT_TAX_RATE_TYPE);
+        categoryToTaxRateMap.put(Books, LAMBDA_EXEMPT_TAX_RATE_TYPE);
+        categoryToTaxRateMap.put(Snacks, LAMBDA_REDUCED_TAX_RATE_TYPE);
+        categoryToTaxRateMap.put(SoftDrinks, LAMBDA_REDUCED_TAX_RATE_TYPE);
+    }
 
-    public SalesTax
-
-    salesTaxEntryFor(LineItem item) {
+    public SalesTax salesTaxEntryFor(LineItem item) {
 /*//        attempt 1: return SalesTax object configured with hardcoded values
         return SalesTax.atRateOf(0.09).withName("Reduced").forAnAmountOf(0.27);*/
 
@@ -38,7 +48,7 @@ public class SalesTaxService {
         return SalesTax.atRateOf(taxRateForItem.getRatePercent()).withName(taxRateForItem.getRateName()).forAnAmountOf(taxRateForItem.getRateAmount());
     }*/
 
-// attempt 4: same as Step 3 but move the TaxRate instantiation step to a separate method
+// attempt 4: same as Step 3 but move the TaxRate instantiation responsibility to a separate method
 // This gives us the space and distance to flesh out the conditional logic for varying tax rate and name
         TaxRate taxRateForItem = fetchTaxRate(item);
         return SalesTax.atRateOf(taxRateForItem.getRatePercent()).withName(taxRateForItem.getRateName()).forAnAmountOf(taxRateForItem.getRateAmount());
@@ -49,7 +59,7 @@ public class SalesTaxService {
         return new TaxRate(0.09, "Reduced", 0.27);*/
 
 /*//iteration 2: write the conditional logic to handle Reduced tax type. You can expand the logic to other two tax types in the next iteration
-// We write the conditional logic using Strategy Pattern (a concrete implementation object set to its parent interface type)
+// We write the conditional logic using Strategy Pattern (a concrete implementation object set to its generic parent interface type)
 
         TaxRateType taxRateType = new ReducedTaxRateType();
         return taxRateType.rateFor(item);*/
@@ -71,7 +81,7 @@ public class SalesTaxService {
 
         // Iteration 4: expand the logic to all tax types using a Map
         ProductCategory category = item.getCategory();
-        TaxRateType taxRateType = categoryToTaxRateMap.getOrDefault(category, new StandardTaxRateType());
-        return taxRateType.rateFor(item);
+        TaxRateType taxRateType = categoryToTaxRateMap.getOrDefault(category, LAMBDA_STANDARD_TAX_RATE_TYPE);
+        return taxRateType.apply(item);
     }
 }
